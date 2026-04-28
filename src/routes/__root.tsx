@@ -29,14 +29,13 @@ export const Route = createRootRoute({
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { title: "IM Ingeniería y Minerales S.A.S. — Construcción, Metalmecánica y Minería" },
+      { name: "description", content: "Empresa colombiana de ingeniería y construcción. Obras civiles, plantas concreteras, bodegas industriales, silos, metalmecánica y alquiler de maquinaria. +20 años de experiencia." },
+      { name: "author", content: "IM Ingeniería y Minerales S.A.S." },
+      { property: "og:title", content: "IM Ingeniería y Minerales S.A.S." },
+      { property: "og:description", content: "Ingeniería sólida para proyectos que perduran. Construcción, metalmecánica, minería y maquinaria pesada." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
-      { name: "twitter:site", content: "@Lovable" },
     ],
     links: [
       {

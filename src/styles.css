@@ -2,6 +2,8 @@
 @source "../src";
 @import "tw-animate-css";
 
+@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap");
+
 @custom-variant dark (&:is(.dark *));
 
 /*
@@ -63,25 +65,52 @@
 
 :root {
   --radius: 0.625rem;
+
+  /* Brand — IM Ingeniería: deep navy + bold red */
   --background: oklch(1 0 0);
-  --foreground: oklch(0.129 0.042 264.695);
+  --foreground: oklch(0.16 0.04 265);
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.129 0.042 264.695);
+  --card-foreground: oklch(0.16 0.04 265);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.129 0.042 264.695);
-  --primary: oklch(0.208 0.042 265.755);
-  --primary-foreground: oklch(0.984 0.003 247.858);
-  --secondary: oklch(0.968 0.007 247.896);
-  --secondary-foreground: oklch(0.208 0.042 265.755);
-  --muted: oklch(0.968 0.007 247.896);
-  --muted-foreground: oklch(0.554 0.046 257.417);
-  --accent: oklch(0.968 0.007 247.896);
-  --accent-foreground: oklch(0.208 0.042 265.755);
-  --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: oklch(0.984 0.003 247.858);
-  --border: oklch(0.929 0.013 255.508);
-  --input: oklch(0.929 0.013 255.508);
-  --ring: oklch(0.704 0.04 256.788);
+  --popover-foreground: oklch(0.16 0.04 265);
+
+  /* Primary = corporate red */
+  --primary: oklch(0.58 0.22 25);
+  --primary-foreground: oklch(0.99 0 0);
+
+  /* Secondary = deep navy blue */
+  --secondary: oklch(0.22 0.09 265);
+  --secondary-foreground: oklch(0.99 0 0);
+
+  --muted: oklch(0.97 0.01 250);
+  --muted-foreground: oklch(0.45 0.03 257);
+  --accent: oklch(0.94 0.02 250);
+  --accent-foreground: oklch(0.22 0.09 265);
+  --destructive: oklch(0.58 0.22 25);
+  --destructive-foreground: oklch(0.99 0 0);
+  --border: oklch(0.92 0.013 255);
+  --input: oklch(0.92 0.013 255);
+  --ring: oklch(0.58 0.22 25);
+
+  /* Brand tokens */
+  --brand-navy: oklch(0.18 0.07 265);
+  --brand-navy-deep: oklch(0.13 0.06 265);
+  --brand-navy-soft: oklch(0.28 0.09 265);
+  --brand-red: oklch(0.58 0.22 25);
+  --brand-red-bright: oklch(0.64 0.24 25);
+  --brand-blue-accent: oklch(0.55 0.18 245);
+
+  /* Gradients & effects */
+  --gradient-hero: linear-gradient(135deg, oklch(0.13 0.06 265) 0%, oklch(0.18 0.07 265) 60%, oklch(0.22 0.09 265) 100%);
+  --gradient-section: linear-gradient(180deg, oklch(0.18 0.07 265) 0%, oklch(0.13 0.06 265) 100%);
+  --gradient-red: linear-gradient(135deg, oklch(0.58 0.22 25) 0%, oklch(0.64 0.24 25) 100%);
+  --shadow-elegant: 0 20px 50px -20px oklch(0.13 0.06 265 / 0.45);
+  --shadow-red: 0 18px 40px -18px oklch(0.58 0.22 25 / 0.55);
+  --shadow-card: 0 8px 30px -10px oklch(0.18 0.07 265 / 0.18);
+  --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+  --font-display: "Plus Jakarta Sans", "Inter", system-ui, sans-serif;
+  --font-body: "Inter", system-ui, sans-serif;
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
@@ -140,5 +169,12 @@
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    letter-spacing: -0.02em;
   }
 }
