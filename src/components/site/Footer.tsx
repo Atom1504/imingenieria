@@ -26,11 +26,11 @@ export function Footer() {
         <div>
           <h4 className="text-sm font-semibold uppercase tracking-wider text-white">Servicios</h4>
           <ul className="mt-4 space-y-2 text-sm">
-            <li><Link to="/servicios/construccion" className="hover:text-white">Construcción</Link></li>
-            <li><Link to="/servicios/plantas-concreteras" className="hover:text-white">Plantas Concreteras</Link></li>
-            <li><Link to="/servicios/bodegas" className="hover:text-white">Bodegas Industriales</Link></li>
-            <li><Link to="/servicios/silos" className="hover:text-white">Silos Industriales</Link></li>
-            <li><Link to="/servicios/alquiler-maquinaria" className="hover:text-white">Alquiler de Maquinaria</Link></li>
+            <li><Link to="/servicios/$slug" params={{ slug: "construccion" }} className="hover:text-white">Construcción</Link></li>
+            <li><Link to="/servicios/$slug" params={{ slug: "plantas-concreteras" }} className="hover:text-white">Plantas Concreteras</Link></li>
+            <li><Link to="/servicios/$slug" params={{ slug: "bodegas" }} className="hover:text-white">Bodegas Industriales</Link></li>
+            <li><Link to="/servicios/$slug" params={{ slug: "silos" }} className="hover:text-white">Silos Industriales</Link></li>
+            <li><Link to="/servicios/$slug" params={{ slug: "alquiler-maquinaria" }} className="hover:text-white">Alquiler de Maquinaria</Link></li>
           </ul>
         </div>
 
