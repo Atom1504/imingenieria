@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-import { MapPin, Calendar, CheckCircle2 } from "lucide-react";
+import { MapPin, Building2, ArrowUpRight, Layers as LayersIcon } from "lucide-react";
 import { SiteLayout, PageHero, CTASection } from "@/components/site/SiteLayout";
 import bodegasImg from "@/assets/service-bodegas.jpg";
 import concreteraImg from "@/assets/service-concretera.jpg";
@@ -8,14 +8,17 @@ import tierraImg from "@/assets/service-tierra.jpg";
 import silosImg from "@/assets/service-silos.jpg";
 import alquilerImg from "@/assets/service-alquiler.jpg";
 import llaveImg from "@/assets/service-llave.jpg";
+import construccionImg from "@/assets/service-construccion.jpg";
+import roladoImg from "@/assets/service-rolado.jpg";
+import corteImg from "@/assets/service-corte.jpg";
 
 export const Route = createFileRoute("/proyectos")({
   head: () => ({
     meta: [
       { title: "Proyectos — Obras de IM Ingeniería en Colombia" },
-      { name: "description", content: "Una selección de proyectos en obras civiles, metalmecánica, minería, alquiler de maquinaria y proyectos llave en mano." },
+      { name: "description", content: "Portafolio de obras civiles, metalmecánica, minería, alquiler de maquinaria y proyectos llave en mano." },
       { property: "og:title", content: "Proyectos | IM Ingeniería" },
-      { property: "og:description", content: "Obras que respaldan nuestra palabra. Conoce nuestro portafolio de proyectos." },
+      { property: "og:description", content: "Obras que respaldan nuestra palabra." },
     ],
   }),
   component: ProyectosPage,
@@ -23,20 +26,44 @@ export const Route = createFileRoute("/proyectos")({
 
 type Cat = "Todos" | "Obras Civiles" | "Metalmecánica" | "Minería" | "Alquiler de Maquinaria" | "Llave en Mano";
 
-const projects: { title: string; cat: Exclude<Cat, "Todos">; place: string; year: string; img: string; desc: string; results: string[] }[] = [
-  { title: "Bodega Logística Tenjo", cat: "Obras Civiles", place: "Tenjo, Cundinamarca", year: "2024", img: bodegasImg, desc: "Bodega industrial de 6.500 m² con estructura metálica de gran luz, cubierta termoacústica y 8 muelles de carga.", results: ["6.500 m² techados", "Entrega en 7 meses", "8 muelles operativos"] },
-  { title: "Planta Concretera Sabana", cat: "Llave en Mano", place: "Cota, Cundinamarca", year: "2024", img: concreteraImg, desc: "Diseño, montaje y puesta en marcha de planta concretera de 90 m³/h con silos de cemento y obra civil completa.", results: ["90 m³/h de capacidad", "2 silos de 80 ton", "Llave en mano integral"] },
-  { title: "Movimiento de Tierras — Mina Norte", cat: "Minería", place: "Boyacá, Colombia", year: "2023", img: tierraImg, desc: "Adecuación de vías de acceso, terrazas operativas y conformación de botaderos en operación minera de cielo abierto.", results: ["350.000 m³ movidos", "12 km de vías", "Cero accidentes en obra"] },
-  { title: "Silos Cementeros Occidente", cat: "Metalmecánica", place: "Yumbo, Valle del Cauca", year: "2023", img: silosImg, desc: "Fabricación e instalación de tres silos metálicos de 120 toneladas con sistemas de carga neumática y filtros.", results: ["3 silos × 120 ton", "Instalación en 90 días", "Pruebas certificadas"] },
-  { title: "Flota Maquinaria — Vía 4G", cat: "Alquiler de Maquinaria", place: "Cundinamarca", year: "2023", img: alquilerImg, desc: "Alquiler de flota de excavadoras, volquetas y vibrocompactadores para tramo de concesión vial 4G.", results: ["18 equipos en operación", "12 meses continuos", "98% disponibilidad"] },
-  { title: "Complejo Industrial Multiplanta", cat: "Llave en Mano", place: "Sabana de Bogotá", year: "2022", img: llaveImg, desc: "Construcción integral de complejo industrial con bodegas, oficinas, urbanismo y obra electromecánica.", results: ["12.000 m² construidos", "Entrega llave en mano", "Operación inmediata"] },
+type Project = {
+  title: string;
+  cat: Exclude<Cat, "Todos">;
+  place: string;
+  client: string;
+  img: string;
+};
+
+const projects: Project[] = [
+  { title: "Bodega Logística Tenjo", cat: "Obras Civiles", place: "Tenjo, Cundinamarca", client: "Operador logístico industrial", img: bodegasImg },
+  { title: "Planta Concretera Sabana", cat: "Llave en Mano", place: "Cota, Cundinamarca", client: "Constructora regional", img: concreteraImg },
+  { title: "Movimiento de Tierras Mina Norte", cat: "Minería", place: "Boyacá, Colombia", client: "Operador minero", img: tierraImg },
+  { title: "Silos Cementeros Occidente", cat: "Metalmecánica", place: "Yumbo, Valle del Cauca", client: "Industria cementera", img: silosImg },
+  { title: "Flota Maquinaria Vía 4G", cat: "Alquiler de Maquinaria", place: "Cundinamarca", client: "Concesionario vial", img: alquilerImg },
+  { title: "Complejo Industrial Multiplanta", cat: "Llave en Mano", place: "Sabana de Bogotá", client: "Grupo industrial nacional", img: llaveImg },
+  { title: "Edificación Industrial Mosquera", cat: "Obras Civiles", place: "Mosquera, Cundinamarca", client: "Empresa manufacturera", img: construccionImg },
+  { title: "Estructuras Metálicas Roladas", cat: "Metalmecánica", place: "Bogotá D.C.", client: "Proveedor industrial", img: roladoImg },
+  { title: "Piezas CNC para Planta Minera", cat: "Metalmecánica", place: "Antioquia", client: "Operador minero", img: corteImg },
 ];
 
 const filters: Cat[] = ["Todos", "Obras Civiles", "Metalmecánica", "Minería", "Alquiler de Maquinaria", "Llave en Mano"];
 
+const catColors: Record<Exclude<Cat, "Todos">, string> = {
+  "Obras Civiles": "bg-[var(--brand-red)] text-white",
+  "Metalmecánica": "bg-[var(--brand-navy-deep)] text-white",
+  "Minería": "bg-amber-500 text-white",
+  "Alquiler de Maquinaria": "bg-[var(--brand-blue-accent)] text-white",
+  "Llave en Mano": "bg-[var(--brand-red-bright)] text-white",
+};
+
 function ProyectosPage() {
   const [active, setActive] = useState<Cat>("Todos");
   const filtered = active === "Todos" ? projects : projects.filter((p) => p.cat === active);
+
+  const counts = filters.reduce<Record<string, number>>((acc, f) => {
+    acc[f] = f === "Todos" ? projects.length : projects.filter((p) => p.cat === f).length;
+    return acc;
+  }, {});
 
   return (
     <SiteLayout>
@@ -47,50 +74,97 @@ function ProyectosPage() {
         description="Una selección de proyectos que reflejan nuestra capacidad técnica, la diversidad de soluciones que entregamos y el compromiso con cada cliente."
       />
 
-      <section className="bg-white py-16">
+      {/* Stats bar */}
+      <section className="border-b border-border bg-white">
+        <div className="mx-auto grid max-w-7xl grid-cols-2 gap-4 px-4 py-10 sm:grid-cols-4 sm:px-6 lg:px-8">
+          {[
+            { v: "200+", l: "Proyectos entregados" },
+            { v: "20+", l: "Años de experiencia" },
+            { v: "5", l: "Líneas de servicio" },
+            { v: "98%", l: "Obras a tiempo" },
+          ].map((s) => (
+            <div key={s.l} className="text-center sm:text-left">
+              <div className="text-3xl font-extrabold text-[var(--brand-red)]">{s.v}</div>
+              <div className="mt-1 text-xs uppercase tracking-wider text-muted-foreground">{s.l}</div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Filtros + Grid */}
+      <section className="bg-muted py-16">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          {/* Filters */}
           <div className="flex flex-wrap gap-2">
             {filters.map((f) => (
               <button
                 key={f}
                 onClick={() => setActive(f)}
-                className={`rounded-full px-5 py-2 text-sm font-semibold transition-colors ${
+                className={`group inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold transition-all ${
                   active === f
                     ? "bg-[var(--brand-red)] text-white shadow-[var(--shadow-red)]"
-                    : "border border-border bg-card text-foreground hover:border-[var(--brand-red)]/40"
+                    : "border border-border bg-card text-foreground hover:border-[var(--brand-red)]/40 hover:-translate-y-0.5"
                 }`}
               >
                 {f}
+                <span className={`inline-flex h-5 min-w-5 items-center justify-center rounded-full px-1.5 text-[10px] font-bold ${
+                  active === f ? "bg-white/25 text-white" : "bg-muted text-muted-foreground"
+                }`}>
+                  {counts[f]}
+                </span>
               </button>
             ))}
           </div>
 
-          <div className="mt-12 space-y-10">
+          {/* Grid */}
+          <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {filtered.map((p) => (
-              <article key={p.title} className="grid gap-0 overflow-hidden rounded-3xl border border-border bg-card shadow-[var(--shadow-card)] lg:grid-cols-[1.1fr_1fr]">
-                <div className="relative aspect-[4/3] lg:aspect-auto">
-                  <img src={p.img} alt={p.title} loading="lazy" className="h-full w-full object-cover" />
-                  <span className="absolute left-4 top-4 rounded-full bg-[var(--brand-red)] px-3 py-1 text-xs font-semibold text-white">{p.cat}</span>
-                </div>
-                <div className="p-8 lg:p-10">
-                  <h2 className="text-2xl font-extrabold text-[var(--brand-navy-deep)] sm:text-3xl">{p.title}</h2>
-                  <div className="mt-3 flex flex-wrap gap-5 text-sm text-muted-foreground">
-                    <span className="flex items-center gap-1.5"><MapPin className="h-4 w-4 text-[var(--brand-red)]" /> {p.place}</span>
-                    <span className="flex items-center gap-1.5"><Calendar className="h-4 w-4 text-[var(--brand-red)]" /> {p.year}</span>
+              <article
+                key={p.title}
+                className="group relative overflow-hidden rounded-3xl bg-card shadow-[var(--shadow-card)] transition-all hover:-translate-y-1.5 hover:shadow-[var(--shadow-elegant)]"
+              >
+                {/* Image with overlay */}
+                <div className="relative aspect-[4/5] overflow-hidden">
+                  <img
+                    src={p.img}
+                    alt={p.title}
+                    loading="lazy"
+                    className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  />
+                  {/* Gradient overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-[var(--brand-navy-deep)] via-[var(--brand-navy-deep)]/30 to-transparent" />
+                  {/* Hover red accent */}
+                  <div className="absolute inset-0 bg-[var(--brand-red)]/0 mix-blend-multiply transition-colors duration-500 group-hover:bg-[var(--brand-red)]/20" />
+
+                  {/* Top: category badge + arrow */}
+                  <div className="absolute inset-x-5 top-5 flex items-start justify-between">
+                    <span className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[11px] font-bold uppercase tracking-wider ${catColors[p.cat]}`}>
+                      <LayersIcon className="h-3 w-3" />
+                      {p.cat}
+                    </span>
+                    <span className="flex h-9 w-9 items-center justify-center rounded-full bg-white/15 text-white backdrop-blur transition-all group-hover:bg-white group-hover:text-[var(--brand-red)]">
+                      <ArrowUpRight className="h-4 w-4" />
+                    </span>
                   </div>
-                  <p className="mt-5 text-base text-foreground">{p.desc}</p>
-                  <div className="mt-6 border-t border-border pt-5">
-                    <p className="text-xs font-semibold uppercase tracking-widest text-[var(--brand-red)]">Resultados</p>
-                    <ul className="mt-3 space-y-2 text-sm">
-                      {p.results.map((r) => (
-                        <li key={r} className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-[var(--brand-red)]" /> {r}</li>
-                      ))}
-                    </ul>
+
+                  {/* Bottom content */}
+                  <div className="absolute inset-x-0 bottom-0 p-6 text-white">
+                    <h3 className="text-xl font-extrabold leading-tight">{p.title}</h3>
+                    <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1.5 text-xs text-white/85">
+                      <span className="inline-flex items-center gap-1.5"><MapPin className="h-3.5 w-3.5 text-[var(--brand-red-bright)]" /> {p.place}</span>
+                      <span className="inline-flex items-center gap-1.5"><Building2 className="h-3.5 w-3.5 text-[var(--brand-red-bright)]" /> {p.client}</span>
+                    </div>
                   </div>
                 </div>
               </article>
             ))}
           </div>
+
+          {filtered.length === 0 && (
+            <div className="mt-12 rounded-2xl border border-dashed border-border bg-card p-12 text-center text-muted-foreground">
+              No hay proyectos en esta categoría aún.
+            </div>
+          )}
         </div>
       </section>
 

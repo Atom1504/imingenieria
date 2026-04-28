@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { Phone, Mail, MapPin, Clock, Send, CheckCircle2 } from "lucide-react";
 import { z } from "zod";
-import { SiteLayout, PageHero } from "@/components/site/SiteLayout";
+import { SiteLayout, PageHero, LocationMap } from "@/components/site/SiteLayout";
 import { services } from "@/data/services";
 
 export const Route = createFileRoute("/contacto")({
@@ -157,6 +157,20 @@ function ContactoPage() {
             >
               💬 ¿Necesitas respuesta rápida? Escríbenos por WhatsApp
             </a>
+          </div>
+        </div>
+      </section>
+
+      {/* MAPA */}
+      <section className="bg-white py-20">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-2xl text-center">
+            <p className="text-xs font-semibold uppercase tracking-widest text-[var(--brand-red)]">Cómo llegar</p>
+            <h2 className="mt-3 text-3xl font-extrabold text-[var(--brand-navy-deep)] sm:text-4xl">Visita nuestras oficinas</h2>
+            <p className="mt-4 text-muted-foreground">Estamos sobre la Autopista Medellín, a pocos minutos de Bogotá.</p>
+          </div>
+          <div className="mt-10">
+            <LocationMap />
           </div>
         </div>
       </section>
