@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, CheckCircle2, Building2, Layers, Warehouse, Cylinder, GitMerge, Mountain, Scissors, Truck, Handshake, Compass, PencilRuler, HardHat, Rocket, Plus, Minus } from "lucide-react";
 import { useState } from "react";
 import { SiteLayout, PageHero, CTASection } from "@/components/site/SiteLayout";
+import { EditableMedia } from "@/components/ui/EditableMedia";
 import { services } from "@/data/services";
 
 export const Route = createFileRoute("/servicios/")({
@@ -85,9 +86,9 @@ function ServiciosPage() {
               return (
                 <article key={s.slug} className="group relative flex flex-col overflow-hidden rounded-2xl border border-border bg-card transition-all hover:-translate-y-1 hover:shadow-[var(--shadow-card)]">
                   <div className="relative aspect-[16/10] overflow-hidden">
-                    <img src={s.image} alt={s.title} loading="lazy" className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[var(--brand-navy-deep)]/80 via-transparent to-transparent" />
-                    <div className="absolute left-4 top-4 flex h-11 w-11 items-center justify-center rounded-xl bg-[var(--brand-red)] text-white shadow-[var(--shadow-red)]">
+                    <EditableMedia mediaId={`service-index-${s.slug}`} fallbackUrl={s.image} alt={s.title} className="h-full w-full transition-transform duration-500 group-hover:scale-110" />
+                    <div className="absolute inset-0 pointer-events-none bg-gradient-to-t from-[var(--brand-navy-deep)]/80 via-transparent to-transparent" />
+                    <div className="absolute left-4 top-4 flex h-11 w-11 items-center justify-center rounded-xl bg-[var(--brand-red)] text-white shadow-[var(--shadow-red)] pointer-events-none">
                       <Icon className="h-5 w-5" />
                     </div>
                   </div>

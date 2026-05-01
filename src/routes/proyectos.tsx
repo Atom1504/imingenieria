@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { MapPin, Building2, ArrowUpRight, Layers as LayersIcon } from "lucide-react";
 import { SiteLayout, PageHero, CTASection } from "@/components/site/SiteLayout";
+import { EditableMedia } from "@/components/ui/EditableMedia";
 import bodegasImg from "@/assets/service-bodegas.jpg";
 import concreteraImg from "@/assets/service-concretera.jpg";
 import tierraImg from "@/assets/service-tierra.jpg";
@@ -125,19 +126,19 @@ function ProyectosPage() {
               >
                 {/* Image with overlay */}
                 <div className="relative aspect-[4/5] overflow-hidden">
-                  <img
-                    src={p.img}
+                  <EditableMedia
+                    mediaId={`project-${p.title.replace(/\s+/g, '-').toLowerCase()}`}
+                    fallbackUrl={p.img}
                     alt={p.title}
-                    loading="lazy"
-                    className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    className="h-full w-full transition-transform duration-700 group-hover:scale-110"
                   />
                   {/* Gradient overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-[var(--brand-navy-deep)] via-[var(--brand-navy-deep)]/30 to-transparent" />
+                  <div className="absolute inset-0 pointer-events-none bg-gradient-to-t from-[var(--brand-navy-deep)] via-[var(--brand-navy-deep)]/30 to-transparent" />
                   {/* Hover red accent */}
-                  <div className="absolute inset-0 bg-[var(--brand-red)]/0 mix-blend-multiply transition-colors duration-500 group-hover:bg-[var(--brand-red)]/20" />
+                  <div className="absolute inset-0 pointer-events-none bg-[var(--brand-red)]/0 mix-blend-multiply transition-colors duration-500 group-hover:bg-[var(--brand-red)]/20" />
 
                   {/* Top: category badge + arrow */}
-                  <div className="absolute inset-x-5 top-5 flex items-start justify-between">
+                  <div className="absolute inset-x-5 top-5 pointer-events-none flex items-start justify-between">
                     <span className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[11px] font-bold uppercase tracking-wider ${catColors[p.cat]}`}>
                       <LayersIcon className="h-3 w-3" />
                       {p.cat}
@@ -148,7 +149,7 @@ function ProyectosPage() {
                   </div>
 
                   {/* Bottom content */}
-                  <div className="absolute inset-x-0 bottom-0 p-6 text-white">
+                  <div className="absolute inset-x-0 bottom-0 pointer-events-none p-6 text-white">
                     <h3 className="text-xl font-extrabold leading-tight">{p.title}</h3>
                     <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1.5 text-xs text-white/85">
                       <span className="inline-flex items-center gap-1.5"><MapPin className="h-3.5 w-3.5 text-[var(--brand-red-bright)]" /> {p.place}</span>

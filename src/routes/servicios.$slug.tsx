@@ -1,6 +1,7 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { ArrowRight, CheckCircle2, Building2, Layers, Warehouse, Cylinder, GitMerge, Mountain, Scissors, Truck, Handshake } from "lucide-react";
 import { SiteLayout, CTASection } from "@/components/site/SiteLayout";
+import { EditableMedia } from "@/components/ui/EditableMedia";
 import { services, servicesBySlug } from "@/data/services";
 
 const iconMap = { Building2, Layers, Warehouse, Cylinder, GitMerge, Mountain, Scissors, Truck, Handshake } as const;
@@ -52,10 +53,12 @@ function ServiceDetail() {
     <SiteLayout>
       {/* Hero */}
       <section className="relative overflow-hidden bg-[var(--brand-navy-deep)] text-white">
-        <img src={service.image} alt={service.title} className="absolute inset-0 h-full w-full object-cover opacity-30" />
-        <div className="absolute inset-0 bg-gradient-to-r from-[var(--brand-navy-deep)] via-[var(--brand-navy-deep)]/85 to-[var(--brand-navy-deep)]/40" />
-        <div className="relative mx-auto max-w-7xl px-4 py-24 sm:px-6 sm:py-28 lg:px-8 lg:py-32">
-          <Link to="/servicios" className="inline-flex items-center gap-1.5 text-sm text-white/70 hover:text-white">
+        <div className="absolute inset-0 opacity-30">
+          <EditableMedia mediaId={`service-hero-${service.slug}`} fallbackUrl={service.image} alt={service.title} />
+        </div>
+        <div className="absolute inset-0 pointer-events-none bg-gradient-to-r from-[var(--brand-navy-deep)] via-[var(--brand-navy-deep)]/85 to-[var(--brand-navy-deep)]/40" />
+        <div className="relative pointer-events-none mx-auto max-w-7xl px-4 py-24 sm:px-6 sm:py-28 lg:px-8 lg:py-32">
+          <Link to="/servicios" className="inline-flex pointer-events-auto items-center gap-1.5 text-sm text-white/70 hover:text-white">
             ← Volver a servicios
           </Link>
           <div className="mt-6 flex items-center gap-4">
@@ -88,7 +91,7 @@ function ServiceDetail() {
             </ul>
           </div>
           <div className="relative">
-            <img src={service.image} alt={service.title} loading="lazy" className="rounded-2xl object-cover shadow-[var(--shadow-elegant)]" />
+            <EditableMedia mediaId={`service-detail-${service.slug}`} fallbackUrl={service.image} alt={service.title} className="rounded-2xl shadow-[var(--shadow-elegant)] w-full h-full" />
           </div>
         </div>
       </section>
@@ -125,7 +128,7 @@ function ServiceDetail() {
                 className="group overflow-hidden rounded-2xl border border-border bg-card transition-all hover:-translate-y-1 hover:shadow-[var(--shadow-card)]"
               >
                 <div className="aspect-[4/3] overflow-hidden">
-                  <img src={o.image} alt={o.title} loading="lazy" className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" />
+                  <EditableMedia mediaId={`other-service-${o.slug}`} fallbackUrl={o.image} alt={o.title} className="h-full w-full transition-transform duration-500 group-hover:scale-110" />
                 </div>
                 <div className="p-5">
                   <h3 className="font-bold text-[var(--brand-navy-deep)]">{o.title}</h3>

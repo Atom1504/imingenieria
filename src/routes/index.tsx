@@ -3,6 +3,7 @@ import { ArrowRight, ShieldCheck, Users, Clock, Wrench, Building2, Layers, Wareh
 import { SiteLayout, CTASection, LocationMap } from "@/components/site/SiteLayout";
 import { services } from "@/data/services";
 import heroImg from "@/assets/im-hero.jpg";
+import { EditableMedia } from "@/components/ui/EditableMedia";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -57,9 +58,11 @@ function Index() {
     <SiteLayout>
       {/* HERO */}
       <section className="relative overflow-hidden bg-[var(--brand-navy-deep)]">
-        <img src={heroImg} alt="Obra de IM Ingeniería con maquinaria pesada" className="absolute inset-0 h-full w-full object-cover opacity-50" width={1920} height={1080} />
-        <div className="absolute inset-0 bg-gradient-to-r from-[var(--brand-navy-deep)] via-[var(--brand-navy-deep)]/80 to-[var(--brand-navy-deep)]/30" />
-        <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[var(--brand-navy-deep)] to-transparent" />
+        <div className="absolute inset-0 opacity-50">
+          <EditableMedia mediaId="home-hero-bg" fallbackUrl={heroImg} alt="Obra de IM Ingeniería con maquinaria pesada" />
+        </div>
+        <div className="absolute inset-0 pointer-events-none bg-gradient-to-r from-[var(--brand-navy-deep)] via-[var(--brand-navy-deep)]/80 to-[var(--brand-navy-deep)]/30" />
+        <div className="absolute inset-x-0 bottom-0 h-40 pointer-events-none bg-gradient-to-t from-[var(--brand-navy-deep)] to-transparent" />
 
         <div className="relative mx-auto max-w-7xl px-4 py-28 sm:px-6 sm:py-36 lg:px-8 lg:py-44">
           <span className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-4 py-1.5 text-xs font-semibold uppercase tracking-widest text-white backdrop-blur">
@@ -206,7 +209,12 @@ function Index() {
                 }`}
               >
                 <div className={`relative w-full overflow-hidden ${idx === 0 ? "h-full min-h-[420px]" : "aspect-[4/3]"}`}>
-                  <img src={p.img} alt={p.title} loading="lazy" className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                  <EditableMedia 
+                    mediaId={`project-${p.title.replace(/\s+/g, '-').toLowerCase()}`} 
+                    fallbackUrl={p.img} 
+                    alt={p.title} 
+                    className="h-full w-full transition-transform duration-700 group-hover:scale-110" 
+                  />
                   {/* Gradient overlay always visible */}
                   <div className="absolute inset-0 bg-gradient-to-t from-[var(--brand-navy-deep)] via-[var(--brand-navy-deep)]/40 to-transparent" />
                   {/* Hover overlay */}

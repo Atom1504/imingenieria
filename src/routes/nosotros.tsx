@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Target, Eye, Heart, Award, Users, Wrench, ShieldCheck, Flag, TrendingUp, Cog, Trophy } from "lucide-react";
 import { SiteLayout, PageHero, CTASection } from "@/components/site/SiteLayout";
+import { EditableMedia } from "@/components/ui/EditableMedia";
 import aboutImg from "@/assets/about-experience.jpg";
 
 export const Route = createFileRoute("/nosotros")({
@@ -62,7 +63,7 @@ function NosotrosPage() {
             </ul>
           </div>
           <div className="relative">
-            <img src={aboutImg} alt="Supervisor de obra en sitio" loading="lazy" className="rounded-2xl object-cover shadow-[var(--shadow-elegant)]" />
+            <EditableMedia mediaId="about-supervisor" fallbackUrl={aboutImg} alt="Supervisor de obra en sitio" className="rounded-2xl object-cover shadow-[var(--shadow-elegant)]" />
             <div className="absolute -bottom-6 -left-6 rounded-2xl bg-[var(--brand-red)] px-6 py-5 text-white shadow-[var(--shadow-red)]">
               <div className="text-3xl font-extrabold">20 años</div>
               <div className="text-sm">de experiencia</div>
