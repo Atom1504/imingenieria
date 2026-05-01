@@ -34,10 +34,14 @@ export const Route = createRootRoute({
       { title: "IM Ingeniería y Minerales S.A.S. — Construcción, Metalmecánica y Minería" },
       { name: "description", content: "Empresa colombiana de ingeniería y construcción. Obras civiles, plantas concreteras, bodegas industriales, silos, metalmecánica y alquiler de maquinaria. +20 años de experiencia." },
       { name: "author", content: "IM Ingeniería y Minerales S.A.S." },
-      { property: "og:title", content: "IM Ingeniería y Minerales S.A.S." },
-      { property: "og:description", content: "Ingeniería sólida para proyectos que perduran. Construcción, metalmecánica, minería y maquinaria pesada." },
+      { property: "og:title", content: "IM Ingeniería y Minerales S.A.S. — Construcción, Metalmecánica y Minería" },
+      { property: "og:description", content: "Empresa colombiana de ingeniería y construcción. Obras civiles, plantas concreteras, bodegas industriales, silos, metalmecánica y alquiler de maquinaria. +20 años de experiencia." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
+      { name: "twitter:title", content: "IM Ingeniería y Minerales S.A.S. — Construcción, Metalmecánica y Minería" },
+      { name: "twitter:description", content: "Empresa colombiana de ingeniería y construcción. Obras civiles, plantas concreteras, bodegas industriales, silos, metalmecánica y alquiler de maquinaria. +20 años de experiencia." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/ab684b1b-d54f-4700-8003-0eb4c1dafcdb/id-preview-4f450405--4326ae13-841a-4918-8934-8e1717ab66e1.lovable.app-1777398891739.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/ab684b1b-d54f-4700-8003-0eb4c1dafcdb/id-preview-4f450405--4326ae13-841a-4918-8934-8e1717ab66e1.lovable.app-1777398891739.png" },
     ],
     links: [
       {
