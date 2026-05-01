@@ -12,9 +12,9 @@ interface AuthContextType {
 export const AuthContext = createContext<AuthContextType>({
   user: null,
   isEditingMode: false,
-  login: async () => {},
-  logout: () => {},
-  toggleEditingMode: () => {},
+  login: async () => { },
+  logout: () => { },
+  toggleEditingMode: () => { },
 });
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
@@ -55,7 +55,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             reject(new Error("Usuario inactivo"));
             return;
           }
-          
+
           const fakeUser = { email: validUser.email, role: validUser.role };
           setUser(fakeUser);
           setIsEditingMode(true);
