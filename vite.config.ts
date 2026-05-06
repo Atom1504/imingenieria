@@ -24,6 +24,15 @@ export default defineConfig({
   // para que la salida sea archivos estáticos puros.
   cloudflare: false,
 
+  server: {
+    proxy: {
+      '/api': {
+        target: 'http://localhost/imingenieria/public',
+        changeOrigin: true,
+      }
+    }
+  },
+
   // Opciones que se pasan directamente al plugin de TanStack Start
   tanstackStart: {
     prerender: {

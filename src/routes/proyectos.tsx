@@ -1,17 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
-import { MapPin, Building2, ArrowUpRight, Layers as LayersIcon } from "lucide-react";
+import { useState, useEffect } from "react";
+import { MapPin, Building2, ArrowUpRight, Layers as LayersIcon, Plus, Trash2, Edit } from "lucide-react";
 import { SiteLayout, PageHero, CTASection } from "@/components/site/SiteLayout";
 import { EditableMedia } from "@/components/ui/EditableMedia";
-import bodegasImg from "@/assets/service-bodegas.jpg";
-import concreteraImg from "@/assets/service-concretera.jpg";
-import tierraImg from "@/assets/service-tierra.jpg";
-import silosImg from "@/assets/service-silos.jpg";
-import alquilerImg from "@/assets/service-alquiler.jpg";
-import llaveImg from "@/assets/service-llave.jpg";
-import construccionImg from "@/assets/service-construccion.jpg";
-import roladoImg from "@/assets/service-rolado.jpg";
-import corteImg from "@/assets/service-corte.jpg";
+import { useAuth } from "@/contexts/AuthContext";
+import { toast } from "sonner";
 
 export const Route = createFileRoute("/proyectos")({
   head: () => ({
@@ -28,24 +21,13 @@ export const Route = createFileRoute("/proyectos")({
 type Cat = "Todos" | "Obras Civiles" | "Metalmecánica" | "Minería" | "Alquiler de Maquinaria" | "Llave en Mano";
 
 type Project = {
+  id: number;
   title: string;
   cat: Exclude<Cat, "Todos">;
   place: string;
   client: string;
   img: string;
 };
-
-const projects: Project[] = [
-  { title: "Bodega Logística Tenjo", cat: "Obras Civiles", place: "Tenjo, Cundinamarca", client: "Operador logístico industrial", img: bodegasImg },
-  { title: "Planta Concretera Sabana", cat: "Llave en Mano", place: "Cota, Cundinamarca", client: "Constructora regional", img: concreteraImg },
-  { title: "Movimiento de Tierras Mina Norte", cat: "Minería", place: "Boyacá, Colombia", client: "Operador minero", img: tierraImg },
-  { title: "Silos Cementeros Occidente", cat: "Metalmecánica", place: "Yumbo, Valle del Cauca", client: "Industria cementera", img: silosImg },
-  { title: "Flota Maquinaria Vía 4G", cat: "Alquiler de Maquinaria", place: "Cundinamarca", client: "Concesionario vial", img: alquilerImg },
-  { title: "Complejo Industrial Multiplanta", cat: "Llave en Mano", place: "Sabana de Bogotá", client: "Grupo industrial nacional", img: llaveImg },
-  { title: "Edificación Industrial Mosquera", cat: "Obras Civiles", place: "Mosquera, Cundinamarca", client: "Empresa manufacturera", img: construccionImg },
-  { title: "Estructuras Metálicas Roladas", cat: "Metalmecánica", place: "Bogotá D.C.", client: "Proveedor industrial", img: roladoImg },
-  { title: "Piezas CNC para Planta Minera", cat: "Metalmecánica", place: "Antioquia", client: "Operador minero", img: corteImg },
-];
 
 const filters: Cat[] = ["Todos", "Obras Civiles", "Metalmecánica", "Minería", "Alquiler de Maquinaria", "Llave en Mano"];
 
@@ -58,13 +40,79 @@ const catColors: Record<Exclude<Cat, "Todos">, string> = {
 };
 
 function ProyectosPage() {
+  const { isEditingMode } = useAuth();
   const [active, setActive] = useState<Cat>("Todos");
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Fetch projects from API
+  const fetchProjects = async () => {
+    setIsLoading(true);
+    try {
+      const res = await fetch('/api/projects.php');
+      const data = await res.json();
+      setProjects(data);
+    } catch (error) {
+      toast.error("Error al cargar proyectos");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchProjects();
+  }, []);
+
   const filtered = active === "Todos" ? projects : projects.filter((p) => p.cat === active);
 
   const counts = filters.reduce<Record<string, number>>((acc, f) => {
     acc[f] = f === "Todos" ? projects.length : projects.filter((p) => p.cat === f).length;
     return acc;
   }, {});
+
+  const handleDelete = async (id: number) => {
+    if (!confirm("¿Estás seguro de eliminar este proyecto?")) return;
+    try {
+      const res = await fetch('/api/projects.php', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id })
+      });
+      if (res.ok) {
+        toast.success("Proyecto eliminado");
+        fetchProjects();
+      } else {
+        toast.error("Error al eliminar");
+      }
+    } catch (error) {
+      toast.error("Error de conexión");
+    }
+  };
+
+  const handleAdd = async () => {
+    const title = prompt("Título del proyecto:");
+    if (!title) return;
+    const cat = prompt("Categoría (Obras Civiles, Metalmecánica, Minería, Alquiler de Maquinaria, Llave en Mano):") || "Obras Civiles";
+    const place = prompt("Ubicación:") || "Colombia";
+    const client = prompt("Cliente:") || "Cliente Confidencial";
+    const img = "https://images.unsplash.com/photo-1541888081643-eb31f9b31175?auto=format&fit=crop&q=80&w=800"; // Default image
+
+    try {
+      const res = await fetch('/api/projects.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ title, cat, place, client, img })
+      });
+      if (res.ok) {
+        toast.success("Proyecto creado. Ahora puedes cambiar la imagen.");
+        fetchProjects();
+      } else {
+        toast.error("Error al crear");
+      }
+    } catch (error) {
+      toast.error("Error de conexión");
+    }
+  };
 
   return (
     <SiteLayout>
@@ -96,38 +144,64 @@ function ProyectosPage() {
       <section className="bg-muted py-16">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           {/* Filters */}
-          <div className="flex flex-wrap gap-2">
-            {filters.map((f) => (
-              <button
-                key={f}
-                onClick={() => setActive(f)}
-                className={`group inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold transition-all ${
-                  active === f
-                    ? "bg-[var(--brand-red)] text-white shadow-[var(--shadow-red)]"
-                    : "border border-border bg-card text-foreground hover:border-[var(--brand-red)]/40 hover:-translate-y-0.5"
-                }`}
+          <div className="flex flex-wrap gap-2 justify-between items-center">
+            <div className="flex flex-wrap gap-2">
+              {filters.map((f) => (
+                <button
+                  key={f}
+                  onClick={() => setActive(f)}
+                  className={`group inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold transition-all ${
+                    active === f
+                      ? "bg-[var(--brand-red)] text-white shadow-[var(--shadow-red)]"
+                      : "border border-border bg-card text-foreground hover:border-[var(--brand-red)]/40 hover:-translate-y-0.5"
+                  }`}
+                >
+                  {f}
+                  <span className={`inline-flex h-5 min-w-5 items-center justify-center rounded-full px-1.5 text-[10px] font-bold ${
+                    active === f ? "bg-white/25 text-white" : "bg-muted text-muted-foreground"
+                  }`}>
+                    {counts[f] || 0}
+                  </span>
+                </button>
+              ))}
+            </div>
+
+            {isEditingMode && (
+              <button 
+                onClick={handleAdd}
+                className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-full flex items-center gap-2 font-semibold transition-colors shadow-lg"
               >
-                {f}
-                <span className={`inline-flex h-5 min-w-5 items-center justify-center rounded-full px-1.5 text-[10px] font-bold ${
-                  active === f ? "bg-white/25 text-white" : "bg-muted text-muted-foreground"
-                }`}>
-                  {counts[f]}
-                </span>
+                <Plus className="w-5 h-5" /> Añadir Proyecto
               </button>
-            ))}
+            )}
           </div>
 
           {/* Grid */}
           <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {filtered.map((p) => (
+            {isLoading ? (
+               <div className="col-span-full py-12 text-center text-muted-foreground">Cargando proyectos...</div>
+            ) : filtered.map((p) => (
               <article
-                key={p.title}
+                key={p.id}
                 className="group relative overflow-hidden rounded-3xl bg-card shadow-[var(--shadow-card)] transition-all hover:-translate-y-1.5 hover:shadow-[var(--shadow-elegant)]"
               >
+                {/* Controles de edición */}
+                {isEditingMode && (
+                  <div className="absolute top-4 right-4 z-30 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity bg-black/40 p-1 rounded-full backdrop-blur-sm">
+                    <button 
+                      onClick={() => handleDelete(p.id)}
+                      className="p-2 bg-red-500 hover:bg-red-600 text-white rounded-full transition-colors"
+                      title="Eliminar proyecto"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  </div>
+                )}
+
                 {/* Image with overlay */}
                 <div className="relative aspect-[4/5] overflow-hidden">
                   <EditableMedia
-                    mediaId={`project-${p.title.replace(/\s+/g, '-').toLowerCase()}`}
+                    mediaId={`project-img-${p.id}`}
                     fallbackUrl={p.img}
                     alt={p.title}
                     className="h-full w-full transition-transform duration-700 group-hover:scale-110"
@@ -139,7 +213,7 @@ function ProyectosPage() {
 
                   {/* Top: category badge + arrow */}
                   <div className="absolute inset-x-5 top-5 pointer-events-none flex items-start justify-between">
-                    <span className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[11px] font-bold uppercase tracking-wider ${catColors[p.cat]}`}>
+                    <span className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[11px] font-bold uppercase tracking-wider ${catColors[p.cat] || "bg-gray-600 text-white"}`}>
                       <LayersIcon className="h-3 w-3" />
                       {p.cat}
                     </span>
@@ -161,7 +235,7 @@ function ProyectosPage() {
             ))}
           </div>
 
-          {filtered.length === 0 && (
+          {!isLoading && filtered.length === 0 && (
             <div className="mt-12 rounded-2xl border border-dashed border-border bg-card p-12 text-center text-muted-foreground">
               No hay proyectos en esta categoría aún.
             </div>

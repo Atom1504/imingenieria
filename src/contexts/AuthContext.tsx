@@ -33,41 +33,27 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const login = async (email: string, password: string) => {
-    // Simulación de una llamada a la API
-    return new Promise<void>((resolve, reject) => {
-      setTimeout(() => {
-        const storedUsersStr = localStorage.getItem("imingenieria_users");
-        let allUsers = [];
-        if (storedUsersStr) {
-          allUsers = JSON.parse(storedUsersStr);
-        } else {
-          allUsers = [
-            { id: 1, email: 'admin@imingenieria.com', role: 'admin', status: 'Activo', password: 'admin123' },
-            { id: 2, email: 'editor@imingenieria.com', role: 'user', status: 'Activo', password: 'editor123' }
-          ];
-        }
+    try {
+      const response = await fetch('/api/login.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      });
 
-        const validUser = allUsers.find((u: any) => u.email === email && u.password === password);
+      const data = await response.json();
 
-        if (validUser) {
-          if (validUser.status !== 'Activo') {
-            toast.error("Usuario inactivo", { description: "Tu cuenta está desactivada." });
-            reject(new Error("Usuario inactivo"));
-            return;
-          }
+      if (!response.ok) {
+        toast.error(data.error || "Credenciales incorrectas");
+        throw new Error(data.error || "Credenciales incorrectas");
+      }
 
-          const fakeUser = { email: validUser.email, role: validUser.role };
-          setUser(fakeUser);
-          setIsEditingMode(true);
-          localStorage.setItem("imingenieria_user", JSON.stringify(fakeUser));
-          toast.success("Sesión iniciada correctamente", { description: "Modo edición activado" });
-          resolve();
-        } else {
-          toast.error("Credenciales incorrectas");
-          reject(new Error("Credenciales incorrectas"));
-        }
-      }, 800);
-    });
+      setUser(data.user);
+      setIsEditingMode(true);
+      localStorage.setItem("imingenieria_user", JSON.stringify(data.user));
+      toast.success(data.message, { description: "Modo edición activado" });
+    } catch (error) {
+      throw error;
+    }
   };
 
   const logout = () => {

@@ -26,9 +26,7 @@ export function EditableMedia({
   
   // En una app real, inicializaríamos currentUrl consultando a la base de datos con mediaId
   const [currentUrl, setCurrentUrl] = useState(() => {
-    // Simulamos recuperar la URL guardada del localStorage para mantener el estado entre recargas
-    const saved = localStorage.getItem(`media_${mediaId}`);
-    return saved || fallbackUrl;
+    return fallbackUrl;
   });
   
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
@@ -55,26 +53,28 @@ export function EditableMedia({
 
     setIsUploading(true);
     
-    // Simulación de carga al servidor (S3, Cloudinary, etc.)
     try {
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      // Simulación: en producción, aquí recibiríamos la nueva URL del servidor
-      // Fake saving to localStorage to persist locally for demonstration
-      
-      // Convert file to base64 just for local demo persistence (NOT for production)
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        const base64String = reader.result as string;
-        localStorage.setItem(`media_${mediaId}`, base64String);
-        setCurrentUrl(base64String);
-        setPreviewUrl(null);
-        toast.success("Recurso multimedia actualizado correctamente");
-        setIsUploading(false);
-      };
-      reader.readAsDataURL(file);
-      
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('mediaId', mediaId);
+
+      const response = await fetch('/api/upload.php', {
+        method: 'POST',
+        body: formData,
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Error al subir");
+      }
+
+      setCurrentUrl(data.url);
+      setPreviewUrl(null);
+      toast.success("Recurso multimedia actualizado correctamente");
+      setIsUploading(false);
     } catch (error) {
+      console.error("Error uploading:", error);
       toast.error("Error al subir el archivo");
       setIsUploading(false);
     }

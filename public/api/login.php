@@ -1,0 +1,35 @@
+<?php
+require_once 'config.php';
+session_start();
+
+$data = json_decode(file_get_contents("php://input"), true);
+
+if (!isset($data['email']) || !isset($data['password'])) {
+    http_response_code(400);
+    echo json_encode(["error" => "Email y contraseña requeridos"]);
+    exit;
+}
+
+$email = $data['email'];
+$password = $data['password'];
+
+$stmt = $pdo->prepare("SELECT * FROM users WHERE email = ?");
+$stmt->execute([$email]);
+$user = $stmt->fetch();
+
+if ($user && password_verify($password, $user['password_hash'])) {
+    $_SESSION['user_id'] = $user['id'];
+    $_SESSION['role'] = $user['role'];
+    
+    echo json_encode([
+        "message" => "Login exitoso",
+        "user" => [
+            "email" => $user['email'],
+            "role" => $user['role']
+        ]
+    ]);
+} else {
+    http_response_code(401);
+    echo json_encode(["error" => "Credenciales incorrectas"]);
+}
+?>
