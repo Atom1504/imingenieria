@@ -204,16 +204,15 @@ function Index() {
               <Link
                 key={p.title}
                 to="/proyectos"
-                className={`group relative block overflow-hidden rounded-3xl bg-card shadow-[var(--shadow-card)] ${
-                  idx === 0 ? "lg:col-span-2 lg:row-span-2" : ""
-                }`}
+                className={`group relative block overflow-hidden rounded-3xl bg-card shadow-[var(--shadow-card)] ${idx === 0 ? "lg:col-span-2 lg:row-span-2" : ""
+                  }`}
               >
                 <div className={`relative w-full overflow-hidden ${idx === 0 ? "h-full min-h-[420px]" : "aspect-[4/3]"}`}>
-                  <EditableMedia 
-                    mediaId={`project-${p.title.replace(/\s+/g, '-').toLowerCase()}`} 
-                    fallbackUrl={p.img} 
-                    alt={p.title} 
-                    className="h-full w-full transition-transform duration-700 group-hover:scale-110" 
+                  <EditableMedia
+                    mediaId={`project-${p.title.replace(/\s+/g, '-').toLowerCase()}`}
+                    fallbackUrl={p.img}
+                    alt={p.title}
+                    className="h-full w-full transition-transform duration-700 group-hover:scale-110"
                   />
                   {/* Gradient overlay always visible */}
                   <div className="absolute inset-0 bg-gradient-to-t from-[var(--brand-navy-deep)] via-[var(--brand-navy-deep)]/40 to-transparent" />
@@ -273,7 +272,7 @@ function Index() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-3xl text-center">
             <p className="text-xs font-semibold uppercase tracking-widest text-[var(--brand-red)]">Visítanos</p>
-            <h2 className="mt-3 text-4xl font-extrabold text-[var(--brand-navy-deep)] sm:text-5xl">Encuéntranos en la Sabana</h2>
+            <h2 className="mt-3 text-4xl font-extrabold text-[var(--brand-navy-deep)] sm:text-5xl">Encuéntranos en Bogotá</h2>
             <p className="mt-4 text-lg text-muted-foreground">Nuestras oficinas y planta están estratégicamente ubicadas para servir proyectos en toda Colombia.</p>
           </div>
           <div className="mt-12">
