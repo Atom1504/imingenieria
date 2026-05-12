@@ -13,6 +13,14 @@ if (!isset($data['email']) || !isset($data['password'])) {
 $email = $data['email'];
 $password = $data['password'];
 
+// Verificar si la tabla de usuarios está vacía, y si es así, crear un usuario admin por defecto
+$stmtCount = $pdo->query("SELECT COUNT(*) FROM users");
+if ($stmtCount->fetchColumn() == 0) {
+    $defaultEmail = 'admin@imingenieria.com';
+    $defaultPass = password_hash('admin123', PASSWORD_DEFAULT);
+    $pdo->prepare("INSERT INTO users (email, password_hash, role) VALUES (?, ?, 'admin')")->execute([$defaultEmail, $defaultPass]);
+}
+
 $stmt = $pdo->prepare("SELECT * FROM users WHERE email = ?");
 $stmt->execute([$email]);
 $user = $stmt->fetch();

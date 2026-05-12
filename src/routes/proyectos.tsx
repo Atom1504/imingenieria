@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
-import { MapPin, Building2, ArrowUpRight, Layers as LayersIcon, Plus, Trash2, Edit } from "lucide-react";
+import { MapPin, Building2, ArrowUpRight, Layers as LayersIcon, Plus, Trash2, Edit2, X, Loader2 } from "lucide-react";
 import { SiteLayout, PageHero, CTASection } from "@/components/site/SiteLayout";
 import { EditableMedia } from "@/components/ui/EditableMedia";
 import { useAuth } from "@/contexts/AuthContext";
@@ -11,8 +11,6 @@ export const Route = createFileRoute("/proyectos")({
     meta: [
       { title: "Proyectos — Obras de IM Ingeniería en Colombia" },
       { name: "description", content: "Portafolio de obras civiles, metalmecánica, minería, alquiler de maquinaria y proyectos llave en mano." },
-      { property: "og:title", content: "Proyectos | IM Ingeniería" },
-      { property: "og:description", content: "Obras que respaldan nuestra palabra." },
     ],
   }),
   component: ProyectosPage,
@@ -39,19 +37,171 @@ const catColors: Record<Exclude<Cat, "Todos">, string> = {
   "Llave en Mano": "bg-[var(--brand-red-bright)] text-white",
 };
 
+function ProjectModal({
+  isOpen,
+  onClose,
+  onSave,
+  initialData,
+}: {
+  isOpen: boolean;
+  onClose: () => void;
+  onSave: (data: Partial<Project>) => Promise<void>;
+  initialData?: Project | null;
+}) {
+  const [formData, setFormData] = useState<Partial<Project>>({
+    title: "",
+    cat: "Obras Civiles",
+    place: "",
+    client: "",
+    img: "https://images.unsplash.com/photo-1541888081643-eb31f9b31175?auto=format&fit=crop&q=80&w=800",
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  useEffect(() => {
+    if (initialData) {
+      setFormData(initialData);
+    } else {
+      setFormData({
+        title: "",
+        cat: "Obras Civiles",
+        place: "",
+        client: "",
+        img: "https://images.unsplash.com/photo-1541888081643-eb31f9b31175?auto=format&fit=crop&q=80&w=800",
+      });
+    }
+  }, [initialData, isOpen]);
+
+  if (!isOpen) return null;
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    await onSave(formData);
+    setIsSubmitting(false);
+  };
+
+  return (
+    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6">
+      <div 
+        className="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity" 
+        onClick={onClose}
+      />
+      <div className="relative w-full max-w-lg bg-white rounded-3xl shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+        <div className="bg-[var(--brand-navy-deep)] p-6 text-white flex justify-between items-center">
+          <h2 className="text-2xl font-bold">{initialData ? "Editar Proyecto" : "Nuevo Proyecto"}</h2>
+          <button onClick={onClose} className="p-2 hover:bg-white/20 rounded-full transition-colors">
+            <X className="w-5 h-5" />
+          </button>
+        </div>
+        
+        <form onSubmit={handleSubmit} className="p-6 space-y-5">
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-1">Título del Proyecto</label>
+            <input
+              required
+              type="text"
+              value={formData.title}
+              onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+              className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[var(--brand-red)] focus:border-transparent outline-none transition-all"
+              placeholder="Ej. Puente Colgante..."
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-1">Categoría</label>
+            <select
+              required
+              value={formData.cat}
+              onChange={(e) => setFormData({ ...formData, cat: e.target.value as Exclude<Cat, "Todos"> })}
+              className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[var(--brand-red)] focus:border-transparent outline-none transition-all"
+            >
+              {filters.filter(f => f !== "Todos").map(f => (
+                <option key={f} value={f}>{f}</option>
+              ))}
+            </select>
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-1">Ubicación</label>
+              <input
+                required
+                type="text"
+                value={formData.place}
+                onChange={(e) => setFormData({ ...formData, place: e.target.value })}
+                className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[var(--brand-red)] focus:border-transparent outline-none transition-all"
+                placeholder="Ej. Bogotá"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-1">Cliente</label>
+              <input
+                required
+                type="text"
+                value={formData.client}
+                onChange={(e) => setFormData({ ...formData, client: e.target.value })}
+                className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[var(--brand-red)] focus:border-transparent outline-none transition-all"
+                placeholder="Ej. INVIAS"
+              />
+            </div>
+          </div>
+
+          <div className="pt-4 border-t border-gray-100 flex justify-end gap-3">
+            <button
+              type="button"
+              onClick={onClose}
+              className="px-5 py-2.5 text-gray-600 font-semibold hover:bg-gray-100 rounded-xl transition-colors"
+            >
+              Cancelar
+            </button>
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className="px-6 py-2.5 bg-[var(--brand-red)] hover:bg-[var(--brand-red-bright)] text-white font-bold rounded-xl shadow-lg shadow-red-500/30 flex items-center gap-2 disabled:opacity-70 transition-all"
+            >
+              {isSubmitting ? <Loader2 className="w-5 h-5 animate-spin" /> : "Guardar"}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+}
+
+function ProjectSkeleton() {
+  return (
+    <div className="relative aspect-[4/5] overflow-hidden rounded-3xl bg-gray-200 animate-pulse">
+      <div className="absolute inset-x-5 top-5 flex items-start justify-between">
+        <div className="h-6 w-24 bg-black/10 rounded-full" />
+        <div className="h-9 w-9 bg-black/10 rounded-full" />
+      </div>
+      <div className="absolute inset-x-0 bottom-0 p-6">
+        <div className="h-7 w-3/4 bg-white/20 rounded-md mb-4" />
+        <div className="flex gap-4">
+          <div className="h-4 w-20 bg-white/20 rounded-md" />
+          <div className="h-4 w-24 bg-white/20 rounded-md" />
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function ProyectosPage() {
   const { isEditingMode } = useAuth();
   const [active, setActive] = useState<Cat>("Todos");
   const [projects, setProjects] = useState<Project[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  
+  // Modal state
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingProject, setEditingProject] = useState<Project | null>(null);
 
-  // Fetch projects from API
   const fetchProjects = async () => {
     setIsLoading(true);
     try {
       const res = await fetch('/api/projects.php');
       const data = await res.json();
-      setProjects(data);
+      if(Array.isArray(data)) setProjects(data);
     } catch (error) {
       toast.error("Error al cargar proyectos");
     } finally {
@@ -71,47 +221,56 @@ function ProyectosPage() {
   }, {});
 
   const handleDelete = async (id: number) => {
-    if (!confirm("¿Estás seguro de eliminar este proyecto?")) return;
+    if (!confirm("¿Estás seguro de eliminar este proyecto definitivamente?")) return;
     try {
       const res = await fetch('/api/projects.php', {
-        method: 'DELETE',
+        method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id })
+        body: JSON.stringify({ id, _method: 'DELETE' })
       });
       if (res.ok) {
-        toast.success("Proyecto eliminado");
+        toast.success("Proyecto eliminado correctamente");
         fetchProjects();
       } else {
-        toast.error("Error al eliminar");
+        const errorData = await res.json();
+        toast.error(errorData.error || "Error al eliminar");
       }
     } catch (error) {
       toast.error("Error de conexión");
     }
   };
 
-  const handleAdd = async () => {
-    const title = prompt("Título del proyecto:");
-    if (!title) return;
-    const cat = prompt("Categoría (Obras Civiles, Metalmecánica, Minería, Alquiler de Maquinaria, Llave en Mano):") || "Obras Civiles";
-    const place = prompt("Ubicación:") || "Colombia";
-    const client = prompt("Cliente:") || "Cliente Confidencial";
-    const img = "https://images.unsplash.com/photo-1541888081643-eb31f9b31175?auto=format&fit=crop&q=80&w=800"; // Default image
-
+  const handleSaveProject = async (data: Partial<Project>) => {
+    const isEditing = !!data.id;
+    
     try {
       const res = await fetch('/api/projects.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ title, cat, place, client, img })
+        body: JSON.stringify({ ...data, _method: isEditing ? 'PUT' : 'POST' })
       });
+      
       if (res.ok) {
-        toast.success("Proyecto creado. Ahora puedes cambiar la imagen.");
+        toast.success(isEditing ? "Proyecto actualizado" : "Proyecto creado exitosamente");
+        setIsModalOpen(false);
         fetchProjects();
       } else {
-        toast.error("Error al crear");
+        const errorData = await res.json();
+        toast.error(errorData.error || "Error al guardar el proyecto");
       }
     } catch (error) {
-      toast.error("Error de conexión");
+      toast.error("Error de conexión con el servidor");
     }
+  };
+
+  const openNewProjectModal = () => {
+    setEditingProject(null);
+    setIsModalOpen(true);
+  };
+
+  const openEditModal = (project: Project) => {
+    setEditingProject(project);
+    setIsModalOpen(true);
   };
 
   return (
@@ -123,8 +282,14 @@ function ProyectosPage() {
         description="Una selección de proyectos que reflejan nuestra capacidad técnica, la diversidad de soluciones que entregamos y el compromiso con cada cliente."
       />
 
-      {/* Stats bar */}
-      <section className="border-b border-border bg-white">
+      <ProjectModal 
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onSave={handleSaveProject}
+        initialData={editingProject}
+      />
+
+      <section className="border-b border-border bg-white relative z-10">
         <div className="mx-auto grid max-w-7xl grid-cols-2 gap-4 px-4 py-10 sm:grid-cols-4 sm:px-6 lg:px-8">
           {[
             { v: "200+", l: "Proyectos entregados" },
@@ -133,32 +298,33 @@ function ProyectosPage() {
             { v: "98%", l: "Obras a tiempo" },
           ].map((s) => (
             <div key={s.l} className="text-center sm:text-left">
-              <div className="text-3xl font-extrabold text-[var(--brand-red)]">{s.v}</div>
-              <div className="mt-1 text-xs uppercase tracking-wider text-muted-foreground">{s.l}</div>
+              <div className="text-4xl font-black text-[var(--brand-red)] tracking-tight">{s.v}</div>
+              <div className="mt-1 text-[11px] font-bold uppercase tracking-widest text-muted-foreground">{s.l}</div>
             </div>
           ))}
         </div>
       </section>
 
-      {/* Filtros + Grid */}
-      <section className="bg-muted py-16">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          {/* Filters */}
-          <div className="flex flex-wrap gap-2 justify-between items-center">
+      <section className="bg-muted py-20 relative">
+        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-[0.03] pointer-events-none" />
+        
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10">
+          {/* Header & Filters */}
+          <div className="flex flex-col md:flex-row gap-6 justify-between items-start md:items-center mb-12">
             <div className="flex flex-wrap gap-2">
               {filters.map((f) => (
                 <button
                   key={f}
                   onClick={() => setActive(f)}
-                  className={`group inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold transition-all ${
+                  className={`group inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold transition-all duration-300 ${
                     active === f
-                      ? "bg-[var(--brand-red)] text-white shadow-[var(--shadow-red)]"
-                      : "border border-border bg-card text-foreground hover:border-[var(--brand-red)]/40 hover:-translate-y-0.5"
+                      ? "bg-[var(--brand-navy-deep)] text-white shadow-lg shadow-[var(--brand-navy-deep)]/20 scale-105"
+                      : "border border-border/50 bg-white text-foreground hover:border-[var(--brand-red)] hover:text-[var(--brand-red)]"
                   }`}
                 >
                   {f}
-                  <span className={`inline-flex h-5 min-w-5 items-center justify-center rounded-full px-1.5 text-[10px] font-bold ${
-                    active === f ? "bg-white/25 text-white" : "bg-muted text-muted-foreground"
+                  <span className={`inline-flex h-5 min-w-5 items-center justify-center rounded-full px-1.5 text-[10px] font-bold transition-colors ${
+                    active === f ? "bg-white/20 text-white" : "bg-muted text-muted-foreground group-hover:bg-red-50 group-hover:text-red-600"
                   }`}>
                     {counts[f] || 0}
                   </span>
@@ -168,29 +334,41 @@ function ProyectosPage() {
 
             {isEditingMode && (
               <button 
-                onClick={handleAdd}
-                className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-full flex items-center gap-2 font-semibold transition-colors shadow-lg"
+                onClick={openNewProjectModal}
+                className="bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-full flex items-center gap-2 font-bold transition-all shadow-lg shadow-green-500/25 hover:scale-105 whitespace-nowrap"
               >
-                <Plus className="w-5 h-5" /> Añadir Proyecto
+                <Plus className="w-5 h-5" /> 
+                <span>Añadir Proyecto</span>
               </button>
             )}
           </div>
 
           {/* Grid */}
-          <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
             {isLoading ? (
-               <div className="col-span-full py-12 text-center text-muted-foreground">Cargando proyectos...</div>
+               <>
+                 <ProjectSkeleton />
+                 <ProjectSkeleton />
+                 <ProjectSkeleton />
+               </>
             ) : filtered.map((p) => (
               <article
                 key={p.id}
-                className="group relative overflow-hidden rounded-3xl bg-card shadow-[var(--shadow-card)] transition-all hover:-translate-y-1.5 hover:shadow-[var(--shadow-elegant)]"
+                className="group relative overflow-hidden rounded-3xl bg-card shadow-lg shadow-black/5 transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl"
               >
-                {/* Controles de edición */}
+                {/* Controles de edición (Admin) */}
                 {isEditingMode && (
-                  <div className="absolute top-4 right-4 z-30 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity bg-black/40 p-1 rounded-full backdrop-blur-sm">
+                  <div className="absolute top-4 right-4 z-30 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity translate-y-2 group-hover:translate-y-0 duration-300">
                     <button 
-                      onClick={() => handleDelete(p.id)}
-                      className="p-2 bg-red-500 hover:bg-red-600 text-white rounded-full transition-colors"
+                      onClick={(e) => { e.stopPropagation(); openEditModal(p); }}
+                      className="p-2.5 bg-blue-500 hover:bg-blue-600 text-white rounded-full transition-colors shadow-lg"
+                      title="Editar proyecto"
+                    >
+                      <Edit2 className="w-4 h-4" />
+                    </button>
+                    <button 
+                      onClick={(e) => { e.stopPropagation(); handleDelete(p.id); }}
+                      className="p-2.5 bg-red-500 hover:bg-red-600 text-white rounded-full transition-colors shadow-lg"
                       title="Eliminar proyecto"
                     >
                       <Trash2 className="w-4 h-4" />
@@ -198,36 +376,40 @@ function ProyectosPage() {
                   </div>
                 )}
 
-                {/* Image with overlay */}
                 <div className="relative aspect-[4/5] overflow-hidden">
                   <EditableMedia
                     mediaId={`project-img-${p.id}`}
                     fallbackUrl={p.img}
                     alt={p.title}
-                    className="h-full w-full transition-transform duration-700 group-hover:scale-110"
+                    className="h-full w-full"
+                    onUploadComplete={(newUrl) => {
+                      handleSaveProject({ ...p, img: newUrl });
+                    }}
                   />
-                  {/* Gradient overlay */}
-                  <div className="absolute inset-0 pointer-events-none bg-gradient-to-t from-[var(--brand-navy-deep)] via-[var(--brand-navy-deep)]/30 to-transparent" />
-                  {/* Hover red accent */}
-                  <div className="absolute inset-0 pointer-events-none bg-[var(--brand-red)]/0 mix-blend-multiply transition-colors duration-500 group-hover:bg-[var(--brand-red)]/20" />
+                  
+                  {/* Overlays */}
+                  <div className="absolute inset-0 pointer-events-none bg-gradient-to-t from-[var(--brand-navy-deep)]/90 via-[var(--brand-navy-deep)]/20 to-transparent" />
+                  <div className="absolute inset-0 pointer-events-none bg-[var(--brand-red)]/0 mix-blend-multiply transition-colors duration-500 group-hover:bg-[var(--brand-red)]/30" />
 
-                  {/* Top: category badge + arrow */}
+                  {/* Top: Category badge */}
                   <div className="absolute inset-x-5 top-5 pointer-events-none flex items-start justify-between">
-                    <span className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[11px] font-bold uppercase tracking-wider ${catColors[p.cat] || "bg-gray-600 text-white"}`}>
-                      <LayersIcon className="h-3 w-3" />
+                    <span className={`inline-flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-[11px] font-black uppercase tracking-wider backdrop-blur-md border border-white/10 shadow-lg ${catColors[p.cat] || "bg-gray-800 text-white"}`}>
+                      <LayersIcon className="h-3.5 w-3.5" />
                       {p.cat}
                     </span>
-                    <span className="flex h-9 w-9 items-center justify-center rounded-full bg-white/15 text-white backdrop-blur transition-all group-hover:bg-white group-hover:text-[var(--brand-red)]">
-                      <ArrowUpRight className="h-4 w-4" />
-                    </span>
+                    {!isEditingMode && (
+                      <span className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur-md border border-white/20 transition-all duration-300 group-hover:bg-[var(--brand-red)] group-hover:border-transparent group-hover:rotate-45 group-hover:scale-110">
+                        <ArrowUpRight className="h-5 w-5" />
+                      </span>
+                    )}
                   </div>
 
                   {/* Bottom content */}
-                  <div className="absolute inset-x-0 bottom-0 pointer-events-none p-6 text-white">
-                    <h3 className="text-xl font-extrabold leading-tight">{p.title}</h3>
-                    <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1.5 text-xs text-white/85">
-                      <span className="inline-flex items-center gap-1.5"><MapPin className="h-3.5 w-3.5 text-[var(--brand-red-bright)]" /> {p.place}</span>
-                      <span className="inline-flex items-center gap-1.5"><Building2 className="h-3.5 w-3.5 text-[var(--brand-red-bright)]" /> {p.client}</span>
+                  <div className="absolute inset-x-0 bottom-0 pointer-events-none p-6 text-white transform transition-transform duration-500">
+                    <h3 className="text-2xl font-extrabold leading-tight mb-3 drop-shadow-md group-hover:text-[var(--brand-red-bright)] transition-colors">{p.title}</h3>
+                    <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-xs font-semibold text-white/90">
+                      <span className="inline-flex items-center gap-1.5 bg-black/20 backdrop-blur-md px-2.5 py-1 rounded-md border border-white/10"><MapPin className="h-3.5 w-3.5 text-[var(--brand-red-bright)]" /> {p.place}</span>
+                      <span className="inline-flex items-center gap-1.5 bg-black/20 backdrop-blur-md px-2.5 py-1 rounded-md border border-white/10"><Building2 className="h-3.5 w-3.5 text-[var(--brand-red-bright)]" /> {p.client}</span>
                     </div>
                   </div>
                 </div>
@@ -236,8 +418,12 @@ function ProyectosPage() {
           </div>
 
           {!isLoading && filtered.length === 0 && (
-            <div className="mt-12 rounded-2xl border border-dashed border-border bg-card p-12 text-center text-muted-foreground">
-              No hay proyectos en esta categoría aún.
+            <div className="mt-12 rounded-3xl border-2 border-dashed border-border bg-white p-16 text-center shadow-sm">
+              <div className="w-16 h-16 bg-muted rounded-full flex items-center justify-center mx-auto mb-4">
+                <LayersIcon className="w-8 h-8 text-muted-foreground/50" />
+              </div>
+              <h3 className="text-xl font-bold text-foreground mb-2">No hay proyectos encontrados</h3>
+              <p className="text-muted-foreground">Intenta seleccionando otra categoría o añade un nuevo proyecto.</p>
             </div>
           )}
         </div>

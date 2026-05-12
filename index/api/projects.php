@@ -1,6 +1,5 @@
 <?php
 require_once 'config.php';
-session_start();
 
 $method = $_SERVER['REQUEST_METHOD'];
 $data = null;
@@ -12,15 +11,6 @@ if (in_array($method, ['POST', 'PUT', 'DELETE'])) {
     }
 }
 
-// Función helper para comprobar autenticación
-function requireAuth() {
-    if (!isset($_SESSION['user_id'])) {
-        http_response_code(401);
-        echo json_encode(["error" => "No autorizado. Inicie sesión."]);
-        exit;
-    }
-}
-
 switch ($method) {
     case 'GET':
         $stmt = $pdo->query("SELECT * FROM projects ORDER BY created_at DESC");
@@ -29,44 +19,41 @@ switch ($method) {
         break;
 
     case 'POST':
-        requireAuth();
         if(!isset($data['title']) || !isset($data['cat']) || !isset($data['place']) || !isset($data['client']) || !isset($data['img'])) {
             http_response_code(400);
-            echo json_encode(["error" => "Faltan campos obligatorios"]);
+            echo json_encode(["error" => "Faltan campos"]);
             exit;
         }
         $stmt = $pdo->prepare("INSERT INTO projects (title, cat, place, client, img) VALUES (?, ?, ?, ?, ?)");
         $stmt->execute([$data['title'], $data['cat'], $data['place'], $data['client'], $data['img']]);
-        echo json_encode(["message" => "Proyecto creado exitosamente", "id" => $pdo->lastInsertId()]);
+        echo json_encode(["message" => "Proyecto creado", "id" => $pdo->lastInsertId()]);
         break;
 
     case 'PUT':
-        requireAuth();
         if(!isset($data['id'])) {
             http_response_code(400);
-            echo json_encode(["error" => "ID del proyecto requerido"]);
+            echo json_encode(["error" => "ID requerido"]);
             exit;
         }
         $stmt = $pdo->prepare("UPDATE projects SET title=?, cat=?, place=?, client=?, img=? WHERE id=?");
         $stmt->execute([$data['title'], $data['cat'], $data['place'], $data['client'], $data['img'], $data['id']]);
-        echo json_encode(["message" => "Proyecto actualizado exitosamente"]);
+        echo json_encode(["message" => "Proyecto actualizado"]);
         break;
 
     case 'DELETE':
-        requireAuth();
         if(!isset($data['id'])) {
             http_response_code(400);
-            echo json_encode(["error" => "ID del proyecto requerido"]);
+            echo json_encode(["error" => "ID requerido"]);
             exit;
         }
         $stmt = $pdo->prepare("DELETE FROM projects WHERE id=?");
         $stmt->execute([$data['id']]);
-        echo json_encode(["message" => "Proyecto eliminado correctamente"]);
+        echo json_encode(["message" => "Proyecto eliminado"]);
         break;
 
     default:
         http_response_code(405);
-        echo json_encode(["error" => "Método HTTP no permitido"]);
+        echo json_encode(["error" => "Método no permitido"]);
         break;
 }
 ?>

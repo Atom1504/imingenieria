@@ -23,5 +23,11 @@ CREATE TABLE IF NOT EXISTS projects (
 INSERT INTO users (email, password_hash, role) 
 SELECT * FROM (SELECT 'admin@imingenieria.com', '$2y$10$fNf8.D/z1s2k0Gg6s0W8GedK0c.g3Q1h.y6y/Pz2X6s/6d0.X6o0W', 'admin') AS tmp
 WHERE NOT EXISTS (
-    SELECT email FROM users WHERE email = 'admin@imingenieria.com'
+SELECT email FROM users WHERE email = 'admin@imingenieria.com'
 ) LIMIT 1;
+
+CREATE TABLE IF NOT EXISTS site_media (
+    media_id VARCHAR(100) PRIMARY KEY,
+    url VARCHAR(255) NOT NULL,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);

@@ -1,13 +1,5 @@
 <?php
 require_once 'config.php';
-session_start();
-
-if (!isset($_SESSION['user_id'])) {
-    http_response_code(401);
-    echo json_encode(["error" => "No autorizado. Inicie sesión para subir archivos."]);
-    exit;
-}
-
 // Para subida de archivos, verificamos si viene $_FILES
 if (!isset($_FILES['file'])) {
     http_response_code(400);
@@ -17,35 +9,22 @@ if (!isset($_FILES['file'])) {
 
 $file = $_FILES['file'];
 
-// Validaciones básicas de error en la subida
+// Validaciones básicas
 if ($file['error'] !== UPLOAD_ERR_OK) {
     http_response_code(500);
-    echo json_encode(["error" => "Error al subir el archivo (Código: " . $file['error'] . ")"]);
+    echo json_encode(["error" => "Error al subir el archivo"]);
     exit;
 }
-
-// Tamaño máximo: 50MB (50 * 1024 * 1024)
-if ($file['size'] > 52428800) {
-    http_response_code(400);
-    echo json_encode(["error" => "El archivo excede el tamaño máximo permitido (50MB)"]);
-    exit;
-}
-
-// Validación de tipo MIME usando finfo (más seguro que $_FILES['type'])
-$finfo = new finfo(FILEINFO_MIME_TYPE);
-$mimeType = $finfo->file($file['tmp_name']);
 
 $allowedTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'video/mp4', 'video/webm'];
-if (!in_array($mimeType, $allowedTypes)) {
+if (!in_array($file['type'], $allowedTypes)) {
     http_response_code(400);
-    echo json_encode(["error" => "Tipo de archivo no permitido: " . $mimeType]);
+    echo json_encode(["error" => "Tipo de archivo no permitido"]);
     exit;
 }
 
 // Crear nombre único
 $ext = pathinfo($file['name'], PATHINFO_EXTENSION);
-// Limpiar extensión
-$ext = preg_replace('/[^a-zA-Z0-9]/', '', $ext);
 $filename = uniqid('media_') . '.' . $ext;
 $uploadDir = '../uploads/';
 

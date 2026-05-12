@@ -1,5 +1,6 @@
 import { Outlet, Link, createRootRoute, HeadContent, Scripts } from "@tanstack/react-router";
 import { AuthProvider } from "@/contexts/AuthContext";
+import { SiteMediaProvider } from "@/contexts/SiteMediaContext";
 import { AdminToolbar } from "@/components/ui/AdminToolbar";
 
 import appCss from "../styles.css?url";
@@ -72,8 +73,10 @@ function RootShell({ children }: { children: React.ReactNode }) {
 function RootComponent() {
   return (
     <AuthProvider>
-      <Outlet />
-      <AdminToolbar />
+      <SiteMediaProvider>
+        <Outlet />
+        <AdminToolbar />
+      </SiteMediaProvider>
     </AuthProvider>
   );
 }
