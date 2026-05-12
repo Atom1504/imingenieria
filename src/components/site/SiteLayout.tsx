@@ -105,9 +105,9 @@ export function CTASection() {
               </p>
               <ul className="mt-7 grid grid-cols-2 gap-3 text-sm text-white/95 sm:grid-cols-2">
                 {[
-                  "Equipo técnico colegiado",
+                  "Equipo profesional capacitado",
                   "Maquinaria propia",
-                  "Protocolos SSOMA",
+                  "Seguridad y salud en el trabajo HSEQ+",
                   "Plazos cumplidos",
                 ].map((i) => (
                   <li key={i} className="flex items-center gap-2">

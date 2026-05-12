@@ -9,7 +9,7 @@ export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
       { title: "IM Ingeniería — Construcción, Metalmecánica y Minería en Colombia" },
-      { name: "description", content: "Diseñamos, construimos y operamos. Maquinaria propia, equipo técnico colegiado y compromiso real con plazos, calidad y seguridad." },
+      { name: "description", content: "Diseñamos, construimos y operamos. Maquinaria propia, equipo profesional capacitado y compromiso real con plazos, calidad y seguridad." },
       { property: "og:title", content: "IM Ingeniería — Ingeniería sólida para proyectos que perduran" },
       { property: "og:description", content: "20+ años entregando obras civiles, plantas industriales y soluciones metalmecánicas en Colombia." },
     ],
@@ -25,7 +25,7 @@ const stats = [
 ];
 
 const advantages = [
-  { icon: ShieldCheck, title: "Seguridad innegociable", text: "Cumplimos protocolos SSOMA en cada frente, con personal certificado y auditorías permanentes." },
+  { icon: ShieldCheck, title: "Seguridad innegociable", text: "Cumplimos con Seguridad y salud en el trabajo HSEQ+ en cada frente, con personal certificado y auditorías permanentes." },
   { icon: Users, title: "Equipo técnico propio", text: "Ingenieros, supervisores, operadores y soldadores con amplia experiencia en proyectos exigentes." },
   { icon: Clock, title: "Plazos cumplidos", text: "Planificación rigurosa, control diario de obra y comunicación transparente con el cliente." },
   { icon: Wrench, title: "Maquinaria propia", text: "Flota de maquinaria pesada y amarilla siempre disponible, con mantenimiento preventivo continuo." },
@@ -42,7 +42,7 @@ const iconMap = { Building2, Layers, Warehouse, Cylinder, GitMerge, Mountain, Tr
 
 const featured = [
   { tag: "Obras Civiles", title: "Bodega Logística Tenjo", place: "Tenjo, Cundinamarca", year: "2024", img: services.find(s => s.slug === "bodegas")!.image, desc: "Bodega industrial 6.500 m² con estructura metálica de gran luz." },
-  { tag: "Llave en Mano", title: "Planta Concretera Sabana", place: "Cota, Cundinamarca", year: "2024", img: services.find(s => s.slug === "plantas-concreteras")!.image, desc: "Diseño, montaje y puesta en marcha 90 m³/h." },
+  { tag: "Pisos Industriales", title: "Pisos Planta Producción", place: "Cota, Cundinamarca", year: "2024", img: services.find(s => s.slug === "pisos-industriales")!.image, desc: "Instalación de 5.000 m² de piso epóxico de alta resistencia." },
   { tag: "Minería", title: "Movimiento de Tierras Mina Norte", place: "Boyacá, Colombia", year: "2023", img: services.find(s => s.slug === "movimiento-tierra")!.image, desc: "350.000 m³ movidos · 12 km de vías de acceso." },
   { tag: "Metalmecánica", title: "Silos Cementeros Occidente", place: "Yumbo, Valle del Cauca", year: "2023", img: services.find(s => s.slug === "silos")!.image, desc: "Tres silos metálicos de 120 ton certificados." },
 ];
@@ -73,7 +73,7 @@ function Index() {
             Ingeniería sólida para proyectos que <span className="text-[var(--brand-red-bright)]">perduran.</span>
           </h1>
           <p className="mt-6 max-w-2xl text-lg text-white/80">
-            En IM Ingeniería diseñamos, construimos y operamos. Maquinaria propia, equipo técnico colegiado y compromiso real con plazos, calidad y seguridad.
+            En IM Ingeniería diseñamos, construimos y operamos. Maquinaria propia, equipo profesional capacitado y compromiso real con plazos, calidad y seguridad.
           </p>
           <div className="mt-10 flex flex-wrap gap-4">
             <Link to="/contacto" className="inline-flex items-center gap-2 rounded-full bg-[var(--brand-red)] px-7 py-4 text-sm font-semibold text-white shadow-[var(--shadow-red)] transition-transform hover:scale-[1.03] hover:bg-[var(--brand-red-bright)]">

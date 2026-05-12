@@ -53,7 +53,7 @@ function NosotrosPage() {
               {[
                 { icon: Award, t: "20+ años de experiencia" },
                 { icon: Users, t: "200+ obras entregadas" },
-                { icon: ShieldCheck, t: "Equipo técnico colegiado" },
+                { icon: ShieldCheck, t: "Equipo profesional capacitado" },
                 { icon: Wrench, t: "Maquinaria propia" },
               ].map((i) => (
                 <li key={i.t} className="flex items-center gap-2">

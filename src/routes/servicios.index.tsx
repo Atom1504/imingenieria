@@ -21,7 +21,7 @@ const iconMap = { Building2, Layers, Warehouse, Cylinder, GitMerge, Mountain, Sc
 
 const benefits = [
   { icon: CheckCircle2, title: "Una sola contraparte", text: "Coordinamos todas las disciplinas técnicas para que tú gestiones un solo interlocutor responsable." },
-  { icon: HardHat, title: "Equipo técnico colegiado", text: "Ingenieros, supervisores y operadores con certificaciones vigentes y experiencia comprobable." },
+  { icon: HardHat, title: "Equipo profesional capacitado", text: "Ingenieros, supervisores y operadores con certificaciones vigentes y experiencia comprobable." },
   { icon: Rocket, title: "Tiempos optimizados", text: "Planificación rigurosa, prefabricación en taller y control diario para reducir tiempos de obra." },
   { icon: CheckCircle2, title: "Calidad documentada", text: "Cada entrega incluye dossier técnico, planos as-built y protocolos de pruebas." },
 ];
@@ -38,7 +38,7 @@ const faqs = [
   { q: "¿En cuánto tiempo entregan una cotización?", a: "Para proyectos estándar respondemos en menos de 24 horas. Para proyectos llave en mano que requieren visita técnica, entregamos propuesta formal entre 5 y 10 días hábiles." },
   { q: "¿Manejan modalidad llave en mano?", a: "Sí. Asumimos la responsabilidad integral del proyecto: ingeniería, gestión de permisos, construcción, montaje electromecánico y puesta en marcha." },
   { q: "¿Cuentan con maquinaria propia?", a: "Sí. Disponemos de flota propia de excavadoras, retroexcavadoras, cargadores, vibrocompactadores, volquetas y motoniveladoras con mantenimiento preventivo continuo." },
-  { q: "¿Cumplen protocolos de seguridad SSOMA?", a: "Es innegociable. Cada frente de obra cuenta con personal HSE certificado, inducciones diarias, EPP completo y auditorías de cumplimiento." },
+  { q: "¿Cumplen con Seguridad y salud en el trabajo HSEQ+?", a: "Es innegociable. Cada frente de obra cuenta con personal HSE certificado, inducciones diarias, EPP completo y auditorías de cumplimiento." },
 ];
 
 function ServiciosPage() {

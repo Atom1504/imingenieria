@@ -1,5 +1,5 @@
 import construccion from "@/assets/service-construccion.jpg";
-import concretera from "@/assets/service-concretera.jpg";
+import pisos from "@/assets/service-bodegas.jpg";
 import bodegas from "@/assets/service-bodegas.jpg";
 import silos from "@/assets/service-silos.jpg";
 import rolado from "@/assets/service-rolado.jpg";
@@ -24,13 +24,13 @@ export const services: Service[] = [
     slug: "construccion",
     title: "Construcción",
     short: "Obras civiles e industriales ejecutadas con rigor técnico, seguridad y plazos cumplidos.",
-    long: "Diseñamos y construimos edificaciones industriales, comerciales y de infraestructura con un enfoque de calidad total. Nuestro equipo técnico colegiado garantiza el cumplimiento normativo, la seguridad operacional y la optimización de costos en cada etapa.",
+    long: "Diseñamos y construimos edificaciones industriales, comerciales y de infraestructura con un enfoque de calidad total. Nuestro equipo profesional capacitado garantiza el cumplimiento normativo, la seguridad operacional y la optimización de costos en cada etapa.",
     image: construccion,
     icon: "Building2",
     bullets: [
-      "Equipo técnico colegiado y experimentado",
+      "Equipo profesional capacitado y experimentado",
       "Cumplimiento estricto de cronograma y presupuesto",
-      "Protocolos SSOMA en cada frente de trabajo",
+      "Seguridad y salud en el trabajo HSEQ+ en cada frente de trabajo",
       "Control de calidad documentado",
     ],
     process: [
@@ -40,22 +40,22 @@ export const services: Service[] = [
     ],
   },
   {
-    slug: "plantas-concreteras",
-    title: "Plantas Concreteras",
-    short: "Diseño, montaje y puesta en marcha de plantas dosificadoras de concreto.",
-    long: "Implementamos plantas concreteras llave en mano, desde la obra civil de cimentación hasta la calibración del sistema dosificador. Soluciones para obras de gran escala con trazabilidad de mezcla y control de calidad continuo.",
-    image: concretera,
+    slug: "pisos-industriales",
+    title: "Pisos Industriales",
+    short: "Diseño, preparación y fundición de pisos industriales de alta resistencia.",
+    long: "Ofrecemos soluciones integrales en pisos industriales, abarcando desde la preparación de la subrasante hasta el acabado superficial. Instalamos pisos epóxicos, de poliuretano y concreto pulido, asegurando durabilidad ante cargas pesadas y alto tráfico.",
+    image: pisos,
     icon: "Layers",
     bullets: [
-      "Dosificación precisa y trazable",
-      "Reducción de mermas y desperdicios",
-      "Montaje llave en mano",
-      "Capacidades desde 30 hasta 120 m³/h",
+      "Resistencia a cargas extremas",
+      "Acabados epóxicos y poliuretano",
+      "Mantenimiento mínimo requerido",
+      "Rápida instalación y habilitación",
     ],
     process: [
-      { step: "Diseño", detail: "Layout optimizado según volumen y logística del cliente." },
-      { step: "Montaje", detail: "Cimentación, estructura, silos y sistema de control." },
-      { step: "Puesta en marcha", detail: "Calibración, capacitación y garantía operativa." },
+      { step: "Evaluación", detail: "Análisis del sustrato y requerimientos de carga del cliente." },
+      { step: "Preparación", detail: "Nivelación, escarificado y tratamiento de fisuras existentes." },
+      { step: "Instalación", detail: "Fundición, aplicación de recubrimientos y sellado final." },
     ],
   },
   {
@@ -189,6 +189,25 @@ export const services: Service[] = [
       { step: "Conceptualización", detail: "Análisis de viabilidad técnica y económica." },
       { step: "Ejecución", detail: "Construcción y montaje integral." },
       { step: "Operación", detail: "Pruebas, entrega y soporte post-arranque." },
+    ],
+  },
+  {
+    slug: "urbanismo",
+    title: "Urbanismo",
+    short: "Desarrollo de infraestructura urbana, vías, andenes y redes de servicios.",
+    long: "Ejecutamos obras de urbanismo integral, incluyendo trazado y pavimentación de vías, construcción de andenes, sardineles, ciclorrutas y la instalación de redes de acueducto, alcantarillado y redes secas para desarrollos inmobiliarios e industriales.",
+    image: tierra,
+    icon: "Building2",
+    bullets: [
+      "Pavimentación en asfalto y concreto rígido",
+      "Redes húmedas y secas",
+      "Espacio público y mobiliario",
+      "Cumplimiento de normas de urbanismo",
+    ],
+    process: [
+      { step: "Topografía", detail: "Levantamiento, replanteo y trazado de redes." },
+      { step: "Infraestructura", detail: "Excavación e instalación de redes subterráneas." },
+      { step: "Acabados", detail: "Pavimentación, andenes y señalización final." },
     ],
   },
 ];

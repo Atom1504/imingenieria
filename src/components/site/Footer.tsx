@@ -27,9 +27,10 @@ export function Footer() {
           <h4 className="text-sm font-semibold uppercase tracking-wider text-white">Servicios</h4>
           <ul className="mt-4 space-y-2 text-sm">
             <li><Link to="/servicios/$slug" params={{ slug: "construccion" }} className="hover:text-white">Construcción</Link></li>
-            <li><Link to="/servicios/$slug" params={{ slug: "plantas-concreteras" }} className="hover:text-white">Plantas Concreteras</Link></li>
+            <li><Link to="/servicios/$slug" params={{ slug: "pisos-industriales" }} className="hover:text-white">Pisos Industriales</Link></li>
             <li><Link to="/servicios/$slug" params={{ slug: "bodegas" }} className="hover:text-white">Bodegas Industriales</Link></li>
-            <li><Link to="/servicios/$slug" params={{ slug: "silos" }} className="hover:text-white">Silos Industriales</Link></li>
+            <li><Link to="/servicios/$slug" params={{ slug: "urbanismo" }} className="hover:text-white">Urbanismo</Link></li>
+            <li><Link to="/servicios/$slug" params={{ slug: "movimiento-tierra" }} className="hover:text-white">Movimiento de Tierra</Link></li>
             <li><Link to="/servicios/$slug" params={{ slug: "alquiler-maquinaria" }} className="hover:text-white">Alquiler de Maquinaria</Link></li>
           </ul>
         </div>
@@ -37,10 +38,22 @@ export function Footer() {
         <div>
           <h4 className="text-sm font-semibold uppercase tracking-wider text-white">Contacto</h4>
           <ul className="mt-4 space-y-3 text-sm">
-            <li className="flex items-start gap-3"><Phone className="mt-0.5 h-4 w-4 text-[var(--brand-red-bright)]" /> +57 311 688 4440</li>
-            <li className="flex items-start gap-3"><Mail className="mt-0.5 h-4 w-4 text-[var(--brand-red-bright)]" /> comercial3@imingenieria.com</li>
-            <li className="flex items-start gap-3"><MapPin className="mt-0.5 h-4 w-4 text-[var(--brand-red-bright)]" /> Autopista Medellín Km 10.5, Tenjo, Cundinamarca</li>
-            <li className="flex items-start gap-3"><Clock className="mt-0.5 h-4 w-4 text-[var(--brand-red-bright)]" /> Lun a Vie · 7:30 a 17:30</li>
+            <li className="flex items-start gap-3">
+              <Phone className="mt-0.5 h-4 w-4 shrink-0 text-[var(--brand-red-bright)]" /> 
+              <div className="flex flex-col gap-1">
+                <span>+57 311 688 4440</span>
+                <span>+57 310 801 9954</span>
+              </div>
+            </li>
+            <li className="flex items-start gap-3">
+              <Mail className="mt-0.5 h-4 w-4 shrink-0 text-[var(--brand-red-bright)]" />
+              <div className="flex flex-col gap-1">
+                <span>comercial3@imingenieria.com</span>
+                <span>proyectos@imingenieria.com</span>
+              </div>
+            </li>
+            <li className="flex items-start gap-3"><MapPin className="mt-0.5 h-4 w-4 shrink-0 text-[var(--brand-red-bright)]" /> <span>Autopista Medellín Km 10.5,<br />Tenjo, Cundinamarca</span></li>
+            <li className="flex items-start gap-3"><Clock className="mt-0.5 h-4 w-4 shrink-0 text-[var(--brand-red-bright)]" /> Lun a Vie · 7:30 am a 4:30 pm</li>
           </ul>
         </div>
       </div>
